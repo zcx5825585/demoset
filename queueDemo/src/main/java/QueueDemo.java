@@ -16,7 +16,7 @@ public class QueueDemo {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                String message="" + i;
+                String message = "" + i;
                 in(message);
             }
         }).start();
@@ -25,7 +25,7 @@ public class QueueDemo {
             while (true) {
                 String message = inQueue.poll();
                 if (message != null) {
-                    String result=execute(message);
+                    String result = execute(message);
                     //将处理结果发送至结果队列
                     backQueue.offer(result);
                 }

@@ -1,4 +1,3 @@
-
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -12,7 +11,7 @@ public class JSchSession {
 
     private Session session;
 
-    public JSchSession(String user, String password, String address, int port,JSch jsch) throws JSchException {
+    public JSchSession(String user, String password, String address, int port, JSch jsch) throws JSchException {
         this.session = jsch.getSession(user, address, port);
         session.setPassword(password);
         session.setConfig("StrictHostKeyChecking", "no");
