@@ -8,31 +8,35 @@ public class QueueDemo {
     public static Queue<String> backQueue = new ArrayBlockingQueue<String>(100);
 
     public static void main(String[] args) {
-        new Thread(() -> {
+        new Thread(() -> {//消费者发送消息的线程
+            //间隔调用in函数 模拟发送消息
             for (int i = 0; i < 100; i++) {
                 try {
                     Thread.sleep((int) (Math.random() * 200));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                in("" + i);
+                String message="" + i;
+                in(message);
             }
         }).start();
 
-        new Thread(() -> {
+        new Thread(() -> {//服务提供者接收待处理消息并返回结果的线程
             while (true) {
-                String s = inQueue.poll();
-                if (s != null) {
-                    execute(s);
+                String message = inQueue.poll();
+                if (message != null) {
+                    String result=execute(message);
+                    //将处理结果发送至结果队列
+                    backQueue.offer(result);
                 }
             }
         }).start();
 
-        new Thread(() -> {
+        new Thread(() -> {//消费者接受返回结果的线程
             while (true) {
-                String s = backQueue.poll();
-                if (s != null) {
-                    callBack(s);
+                String result = backQueue.poll();
+                if (result != null) {
+                    callBack(result);
                 }
             }
         }).start();
@@ -51,14 +55,14 @@ public class QueueDemo {
     }
 
     //处理消息
-    public static void execute(String s) {
+    public static String execute(String s) {
         try {
             //添加延迟 模拟处理耗时
             Thread.sleep((int) (Math.random() * 500));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //将处理结果发送至结果队列
-        backQueue.offer(s);
+        return s;
+
     }
 }
