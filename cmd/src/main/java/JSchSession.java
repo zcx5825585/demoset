@@ -10,31 +10,17 @@ import java.io.InputStreamReader;
 
 public class JSchSession {
 
-    private String user;
-    private String password;
-    private String address;
-    private int port;
-    private int connectTimeout = 60 * 1000;
-    private JSch jsch;
     private Session session;
 
-    public JSchSession(String user, String password, String address, int port,JSch jsch) {
-        this.user = user;
-        this.password = password;
-        this.address = address;
-        this.port = port;
-        this.jsch=jsch;
+    public JSchSession(String user, String password, String address, int port,JSch jsch) throws JSchException {
+        this.session = jsch.getSession(user, address, port);
+        session.setPassword(password);
+        session.setConfig("StrictHostKeyChecking", "no");
+        session.connect(60 * 1000);
     }
 
     public Session getSession() {
         return session;
-    }
-
-    public void connect() throws JSchException {
-        this.session = this.jsch.getSession(this.user, this.address, this.port);
-        session.setPassword(this.password);
-        session.setConfig("StrictHostKeyChecking", "no");
-        session.connect(this.connectTimeout);
     }
 
     public void disconnect() {
