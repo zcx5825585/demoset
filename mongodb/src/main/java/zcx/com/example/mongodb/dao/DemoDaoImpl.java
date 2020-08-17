@@ -10,12 +10,6 @@ import zcx.com.example.mongodb.entity.DemoEntity;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * 描述: Demo DAO 实现
- *
- * @author yanpenglei
- * @create 2018-02-03 16:57
- **/
 @Component
 public class DemoDaoImpl implements DemoDao {
 
