@@ -29,9 +29,9 @@ public class QuestionController {
         MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("title", keyword);
 
         Iterable<Question> searchResult = questionSearchRepository.search(queryBuilder);
-        Iterator<Question> iterator = searchResult.iterator();
         List<Question> result = new ArrayList<>();
-        iterator.forEachRemaining(result::add);
+        searchResult.forEach(result::add);
+//        Iterator<Question> iterator = searchResult.iterator();
 //        while (iterator.hasNext()) {
 //            result.add(iterator.next());
 //        }
