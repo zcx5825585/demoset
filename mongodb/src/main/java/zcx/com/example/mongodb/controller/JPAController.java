@@ -21,6 +21,14 @@ public class JPAController {
         return demoRepository.findAll();
     }
 
+
+    @GetMapping("/test")
+    @ResponseBody
+    public List<DemoEntity> test(String description) {
+        return demoRepository.testSearch(description);
+    }
+
+
     @GetMapping("/{id}")
     @ResponseBody
     public DemoEntity findDemoById(@PathVariable(value = "id") Long id) {
