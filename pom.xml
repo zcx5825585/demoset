@@ -11,6 +11,8 @@
     <modules>
         <module>cmd</module>
         <module>queueDemo</module>
+        <module>xml_html</module>
+        <module>wordCount</module>
     </modules>
     <build>
         <plugins>
