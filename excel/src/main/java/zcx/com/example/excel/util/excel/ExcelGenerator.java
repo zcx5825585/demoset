@@ -85,4 +85,56 @@ public class ExcelGenerator {
     }
 
 
+    public static <T> String createCsv(List<T> data, Class<T> clazz) throws IllegalAccessException {
+        ExcelSheet sheetAnno = clazz.getAnnotation(ExcelSheet.class);
+        if (sheetAnno == null) {
+            return null;
+        }
+        String sheetName = "".equals(sheetAnno.sheetName()) ? clazz.getSimpleName() : sheetAnno.sheetName();
+
+        //表头列表 也是keySet
+        List<String> titles = new ArrayList<>();
+        //属性map 用于取出数据
+        Map<String, Field> fieldMap = new HashMap<>();
+        //注解map 用于对数据进行加工
+        Map<String, ExcelColumn> annoMap = new HashMap<>();
+
+        for (Field field : clazz.getDeclaredFields()) {
+            ExcelColumn columnAnno = field.getAnnotation(ExcelColumn.class);
+            if (columnAnno != null) {
+                String columnName = "".equals(columnAnno.columnName()) ? field.getName() : columnAnno.columnName();
+                titles.add(columnName);
+                fieldMap.put(columnName, field);
+                annoMap.put(columnName, columnAnno);
+            }
+        }
+
+        StringBuilder file = new StringBuilder();
+        StringBuilder title = new StringBuilder();
+        //创建工作表的行
+        for (String columnName : titles) {
+            title.append(",").append(columnName);
+        }
+        file.append(title.substring(1)).append("\n");
+
+        for (T datum : data) {
+            StringBuilder row = new StringBuilder();
+            for (String columnName : titles) {
+                String cell = stringMaker(fieldMap.get(columnName), annoMap.get(columnName), datum);
+                row.append(",").append(cell);
+            }
+            file.append(row.substring(1)).append("\n");
+        }
+        return file.toString();
+    }
+
+    private static <T> String stringMaker(Field field, ExcelColumn columnAnno, T datum) throws IllegalAccessException {
+        field.setAccessible(true);
+        Object value = field.get(datum);
+        //value为空 并且设置了默认值 将value修改为默认值
+        if (value == null && !"".equals(columnAnno.defaultValue())) {
+            value = columnAnno.defaultValue();
+        }
+        return String.valueOf(value);
+    }
 }

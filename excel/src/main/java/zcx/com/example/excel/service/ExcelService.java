@@ -33,4 +33,15 @@ public class ExcelService {
 
         return workbook;
     }
+
+    public String getCsv() {
+        List<ExcelEntity> excelEntities = excelRepository.findAll();
+        String csv = null;
+        try {
+            csv = ExcelGenerator.createCsv(excelEntities, ExcelEntity.class);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return csv;
+    }
 }

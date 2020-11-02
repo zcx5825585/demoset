@@ -22,6 +22,9 @@ public class ExcelEntity {
     @ExcelColumn(defaultValue = "-")
     private String note;
 
+    @ExcelColumn(columnName = "数字",defaultValue = "-")
+    private Integer count;
+
     public Long getId() {
         return id;
     }
@@ -36,6 +39,22 @@ public class ExcelEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     public String getDescription() {

@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 @RestController
 @RequestMapping
@@ -19,11 +20,24 @@ public class ExcelController {
     @Resource
     private ExcelService excelService;
 
+
+    @GetMapping("csv")
+    public void getCsv(HttpServletResponse response) throws IOException {
+        String csv = excelService.getCsv();
+        response.setContentType("application/csv;charset=utf-8");
+        response.setHeader("Content-disposition", "attachment;filename=test.csv");//默认Excel名称
+
+        PrintWriter writer = response.getWriter();
+        writer.write(csv);
+        writer.flush();
+        writer.close();
+    }
+
     @GetMapping
     public void getExcel(HttpServletResponse response) throws IOException {
         HSSFWorkbook workbook = excelService.getWorkBook();
-        response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.setHeader("Content-disposition", "attachment;filename=excel.xlsx");//默认Excel名称
+        response.setContentType("application/csv;charset=utf-8");
+        response.setHeader("Content-disposition", "attachment;filename=excel.csv");//默认Excel名称
 
         OutputStream os = response.getOutputStream();
         workbook.write(os);
