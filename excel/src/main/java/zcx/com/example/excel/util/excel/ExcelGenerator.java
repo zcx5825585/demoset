@@ -23,37 +23,22 @@ public class ExcelGenerator {
         //创建工作表对象
         HSSFSheet sheet = workbook.createSheet(sheetName);//设置sheet的Name
 
-        //表头列表 也是keySet
-        List<String> titles = new ArrayList<>();
-        //属性map 用于取出数据
-        Map<String, Field> fieldMap = new HashMap<>();
-        //注解map 用于对数据进行加工
-        Map<String, ExcelColumn> annoMap = new HashMap<>();
-
-        for (Field field : clazz.getDeclaredFields()) {
-            ExcelColumn columnAnno = field.getAnnotation(ExcelColumn.class);
-            if (columnAnno != null) {
-                String columnName = "".equals(columnAnno.columnName()) ? field.getName() : columnAnno.columnName();
-                titles.add(columnName);
-                fieldMap.put(columnName, field);
-                annoMap.put(columnName, columnAnno);
-            }
-        }
+        ClassInfo classInfo = new ClassInfo(clazz);
 
         //创建工作表的行
         int index = 0;
         HSSFRow row = sheet.createRow(index);//设置第一行，从零开始
-        for (int i = 0; i < titles.size(); i++) {
-            String columnName = titles.get(i);
+        for (int i = 0; i < classInfo.getTitles().size(); i++) {
+            String columnName = classInfo.getTitles().get(i);
             row.createCell(i).setCellValue(columnName);
         }
         index++;
         for (T datum : data) {
             HSSFRow newRow = sheet.createRow(index);//设置第二行，从一开始
-            for (int i = 0; i < titles.size(); i++) {
+            for (int i = 0; i < classInfo.getTitles().size(); i++) {
                 HSSFCell cell = newRow.createCell(i);
-                String columnName = titles.get(i);
-                cellMaker(cell, fieldMap.get(columnName), annoMap.get(columnName), datum);
+                String columnName = classInfo.getTitles().get(i);
+                cellMaker(cell, classInfo.getFieldMap().get(columnName), classInfo.getAnnoMap().get(columnName), datum);
             }
             index++;
         }
@@ -86,41 +71,20 @@ public class ExcelGenerator {
 
 
     public static <T> String createCsv(List<T> data, Class<T> clazz) throws IllegalAccessException {
-        ExcelSheet sheetAnno = clazz.getAnnotation(ExcelSheet.class);
-        if (sheetAnno == null) {
-            return null;
-        }
-        String sheetName = "".equals(sheetAnno.sheetName()) ? clazz.getSimpleName() : sheetAnno.sheetName();
-
-        //表头列表 也是keySet
-        List<String> titles = new ArrayList<>();
-        //属性map 用于取出数据
-        Map<String, Field> fieldMap = new HashMap<>();
-        //注解map 用于对数据进行加工
-        Map<String, ExcelColumn> annoMap = new HashMap<>();
-
-        for (Field field : clazz.getDeclaredFields()) {
-            ExcelColumn columnAnno = field.getAnnotation(ExcelColumn.class);
-            if (columnAnno != null) {
-                String columnName = "".equals(columnAnno.columnName()) ? field.getName() : columnAnno.columnName();
-                titles.add(columnName);
-                fieldMap.put(columnName, field);
-                annoMap.put(columnName, columnAnno);
-            }
-        }
+        ClassInfo classInfo = new ClassInfo(clazz);
 
         StringBuilder file = new StringBuilder();
         StringBuilder title = new StringBuilder();
         //创建工作表的行
-        for (String columnName : titles) {
+        for (String columnName : classInfo.getTitles()) {
             title.append(",").append(columnName);
         }
         file.append(title.substring(1)).append("\n");
 
         for (T datum : data) {
             StringBuilder row = new StringBuilder();
-            for (String columnName : titles) {
-                String cell = stringMaker(fieldMap.get(columnName), annoMap.get(columnName), datum);
+            for (String columnName : classInfo.getTitles()) {
+                String cell = stringMaker(classInfo.getFieldMap().get(columnName), classInfo.getAnnoMap().get(columnName), datum);
                 row.append(",").append(cell);
             }
             file.append(row.substring(1)).append("\n");
