@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zcx.com.example.excel.entity.ExcelEntity;
 import zcx.com.example.excel.repository.ExcelRepository;
+import zcx.com.example.excel.util.excel.CsvGenerator;
 import zcx.com.example.excel.util.excel.ExcelGenerator;
 
 import javax.annotation.Resource;
@@ -38,7 +39,7 @@ public class ExcelService {
         List<ExcelEntity> excelEntities = excelRepository.findAll();
         String csv = null;
         try {
-            csv = ExcelGenerator.createCsv(excelEntities, ExcelEntity.class);
+            csv = CsvGenerator.createCsv(excelEntities, ExcelEntity.class);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }

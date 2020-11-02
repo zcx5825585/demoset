@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ClassInfo {
+public class ObjectExcelInfo {
     //表头列表 也是keySet
     private List<String> titles = new ArrayList<>();
     //属性map 用于取出数据
@@ -14,7 +14,7 @@ public class ClassInfo {
     //注解map 用于对数据进行加工
     private Map<String, ExcelColumn> annoMap = new HashMap<>();
 
-    public ClassInfo(Class clazz) {
+    public ObjectExcelInfo(Class clazz) {
         for (Field field : clazz.getDeclaredFields()) {
             ExcelColumn columnAnno = field.getAnnotation(ExcelColumn.class);
             if (columnAnno != null) {
