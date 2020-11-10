@@ -23,10 +23,9 @@ public class JsoupUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        MultipartFile file=null;
-        file.getInputStream();
         String filePath = "xml_html/20190805.csv";
-//        File file = new File(filePath).getAbsoluteFile();
+        MultipartFile file= (MultipartFile) new File(filePath);
+        file.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "GBK"));
         if (!reader.ready()) {
             throw new Exception();
