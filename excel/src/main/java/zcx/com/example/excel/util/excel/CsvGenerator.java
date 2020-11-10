@@ -1,13 +1,19 @@
 package zcx.com.example.excel.util.excel;
 
+import com.alibaba.fastjson.JSON;
+import org.springframework.util.StringUtils;
+
 import java.lang.reflect.Field;
 import java.util.List;
 
 public class CsvGenerator {
 
-
     public static <T> String createCsv(List<T> data, Class<T> clazz) throws IllegalAccessException {
         ObjectExcelInfo classInfo = new ObjectExcelInfo(clazz);
+        if (!classInfo.isExcelEntity()){
+            //未添加注解
+            return null;
+        }
 
         StringBuilder file = new StringBuilder();
         StringBuilder title = new StringBuilder();
@@ -30,11 +36,36 @@ public class CsvGenerator {
 
     private static <T> String stringMaker(Field field, ExcelColumn columnAnno, T datum) throws IllegalAccessException {
         field.setAccessible(true);
+        String stringValue;
         Object value = field.get(datum);
+        //设置默认值
         //value为空 并且设置了默认值 将value修改为默认值
         if (value == null && !"".equals(columnAnno.defaultValue())) {
             value = columnAnno.defaultValue();
         }
-        return String.valueOf(value);
+        //设置默认值后再次校验value是否为空 依然为空则将stringValue设为空字符串，跳过转换
+        if (value == null) {
+            stringValue = "";
+        } else {//不为空则进行相应转换
+            switch (columnAnno.valueType()) {
+                case JSON:
+                    stringValue = JSON.toJSONString(value);
+                    break;
+                case MAP:
+                    if (!StringUtils.isEmpty(columnAnno.mapName())) {
+                        String outValue = ExcelValueMap.getOutValue(columnAnno.mapName(), String.valueOf(value));
+                        if (outValue != null) {
+                            value = outValue;
+                        }
+                    }
+                    stringValue = String.valueOf(value);
+                    break;
+                case NUMERIC:
+                case STRING:
+                default:
+                    stringValue = String.valueOf(value);
+            }
+        }
+        return stringValue;
     }
 }

@@ -7,14 +7,26 @@ import java.util.List;
 import java.util.Map;
 
 public class ObjectExcelInfo {
+    private String sheetName;
+    private boolean isExcelEntity = true;
     //表头列表 也是keySet
-    private List<String> titles = new ArrayList<>();
+    private List<String> titles;
     //属性map 用于取出数据
-    private Map<String, Field> fieldMap = new HashMap<>();
+    private Map<String, Field> fieldMap;
     //注解map 用于对数据进行加工
-    private Map<String, ExcelColumn> annoMap = new HashMap<>();
+    private Map<String, ExcelColumn> annoMap;
 
     public ObjectExcelInfo(Class clazz) {
+        ExcelSheet sheetAnno = (ExcelSheet) clazz.getAnnotation(ExcelSheet.class);
+        if (sheetAnno == null) {
+            this.isExcelEntity = false;
+            return;
+        }
+        this.sheetName = "".equals(sheetAnno.sheetName()) ? clazz.getSimpleName() : sheetAnno.sheetName();
+
+        this.titles = new ArrayList<>();
+        this.fieldMap = new HashMap<>();
+        this.annoMap = new HashMap<>();
         for (Field field : clazz.getDeclaredFields()) {
             ExcelColumn columnAnno = field.getAnnotation(ExcelColumn.class);
             if (columnAnno != null) {
@@ -26,12 +38,16 @@ public class ObjectExcelInfo {
         }
     }
 
-    public List<String> getTitles() {
-        return titles;
+    public boolean isExcelEntity() {
+        return this.isExcelEntity;
     }
 
-    public void setTitles(List<String> titles) {
-        this.titles = titles;
+    public String getSheetName() {
+        return sheetName;
+    }
+
+    public List<String> getTitles() {
+        return titles;
     }
 
     public Map<String, Field> getFieldMap() {
