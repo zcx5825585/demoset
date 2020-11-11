@@ -8,7 +8,7 @@
         <version>2.3.5.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>zcx.com.example</groupId>
+    <groupId>org.zcx.example</groupId>
     <artifactId>zcx-excel-spring-boot-starter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>zcx-excel-spring-boot-starter</name>

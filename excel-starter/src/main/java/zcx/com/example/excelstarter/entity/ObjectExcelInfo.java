@@ -9,6 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 对象excel相关信息
+ *
+ * @author zcx
+ * @date 2020/11/3
+ */
 public class ObjectExcelInfo {
     private String sheetName;
     private boolean isExcelEntity = true;

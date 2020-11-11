@@ -15,6 +15,12 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * excel生成器
+ *
+ * @author zcx
+ * @date 2020/11/03
+ */
 public class ExcelGenerator {
 
     public static <T> List<T> mapSheet(HSSFWorkbook workbook, Class<T> clazz) throws IllegalAccessException, InstantiationException {

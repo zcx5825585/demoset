@@ -9,6 +9,12 @@ import zcx.com.example.excelstarter.entity.ObjectExcelInfo;
 import java.lang.reflect.Field;
 import java.util.List;
 
+/**
+ * csv生成器
+ *
+ * @author zcx
+ * @date 2020/11/03
+ */
 public class CsvGenerator {
 
     public static <T> String createCsv(List<T> data, Class<T> clazz) throws IllegalAccessException {

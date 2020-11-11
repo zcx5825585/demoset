@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author DELL
+ * @author zcx
  * @date 2020/11/11
  */
 @Configuration
