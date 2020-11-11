@@ -1,8 +1,8 @@
 package zcx.com.example.excel.entity;
 
-import zcx.com.example.excel.util.excel.ExcelColumn;
-import zcx.com.example.excel.util.excel.ExcelSheet;
-import zcx.com.example.excel.util.excel.FiledType;
+import zcx.com.example.excelstarter.anno.ExcelColumn;
+import zcx.com.example.excelstarter.anno.ExcelSheet;
+import zcx.com.example.excelstarter.contant.FiledType;
 
 import javax.persistence.*;
 
