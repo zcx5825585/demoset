@@ -2,9 +2,8 @@ package zcx.com.example.excel.controller;
 
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import zcx.com.example.excel.service.ExcelService;
 
 import javax.annotation.Resource;
@@ -34,6 +33,12 @@ public class ExcelController {
         writer.write(csv);
         writer.flush();
         writer.close();
+    }
+
+    @PostMapping
+    public void readExcel(@RequestParam("file") MultipartFile file) throws IOException {
+        HSSFWorkbook workbook=new HSSFWorkbook(file.getInputStream());
+        excelService.readWorkBook(workbook);
     }
 
     @GetMapping

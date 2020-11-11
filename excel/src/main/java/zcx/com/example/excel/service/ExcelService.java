@@ -18,8 +18,20 @@ public class ExcelService {
     @Resource
     private ExcelRepository excelRepository;
 
-    public HSSFWorkbook getWorkBook() {
+    public void readWorkBook(HSSFWorkbook workbook){
+        try {
+            List<ExcelEntity> excelEntities=ExcelGenerator.mapSheet(workbook,ExcelEntity.class);
+            for (ExcelEntity excelEntity : excelEntities) {
+                System.out.println(excelEntity.getName());
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public HSSFWorkbook getWorkBook() {
         List<ExcelEntity> excelEntities = excelRepository.findAll();
         HSSFWorkbook workbook = null;
         try {
