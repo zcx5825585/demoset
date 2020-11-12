@@ -1,4 +1,4 @@
-package zcx.com.example.excelstarter.contant;
+package zcx.com.example.excelstarter.valueMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
  * @date 2020/11/3
  */
 public class ExcelValueMap {
-    public static Map<String, ExcelValueMap> excelValueMaps = new HashMap<>();
+    private static Map<String, ExcelValueMap> excelValueMaps = new HashMap<>();
 
     private Map<String, String> inMap = new HashMap();
     private Map<String, String> outMap = new HashMap();

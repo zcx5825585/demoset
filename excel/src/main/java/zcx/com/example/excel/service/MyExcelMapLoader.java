@@ -1,9 +1,9 @@
 package zcx.com.example.excel.service;
 
 import org.springframework.stereotype.Component;
-import zcx.com.example.excelstarter.contant.ExcelValueMap;
+import zcx.com.example.excelstarter.valueMap.ExcelValueMap;
+import zcx.com.example.excelstarter.valueMap.MapLoader;
 
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,9 +14,9 @@ import java.util.Map;
  * @date 2020/11/9
  */
 @Component
-public class ExcelMapLoader {
+public class MyExcelMapLoader extends MapLoader {
 
-    @PostConstruct
+    @Override
     public void loadExcelMap() {
         Map<String, String> cityCodeMap = new HashMap<>();
         cityCodeMap.put("0531", "济南");
