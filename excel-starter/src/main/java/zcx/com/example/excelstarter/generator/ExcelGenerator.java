@@ -8,11 +8,12 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellType;
 import org.springframework.util.StringUtils;
 import zcx.com.example.excelstarter.anno.ExcelColumn;
-import zcx.com.example.excelstarter.valueMap.ExcelValueMap;
 import zcx.com.example.excelstarter.contant.ObjectExcelInfo;
+import zcx.com.example.excelstarter.valueMap.ExcelValueMap;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -100,6 +101,9 @@ public class ExcelGenerator {
         field.set(datum, value);
     }
 
+    public static <T> HSSFWorkbook createModelSheet(HSSFWorkbook workbook, Class<T> clazz) throws IllegalAccessException {
+        return createSheet(workbook, new ArrayList<>(), clazz);
+    }
 
     public static <T> HSSFWorkbook createSheet(HSSFWorkbook workbook, List<T> data, Class<T> clazz) throws IllegalAccessException {
         ObjectExcelInfo classInfo = new ObjectExcelInfo(clazz);
@@ -127,6 +131,10 @@ public class ExcelGenerator {
             }
             index++;
         }
+        //调整列宽
+        for (int i = 0; i < classInfo.getTitles().size(); i++) {
+            sheet.autoSizeColumn(i);
+        }
         return workbook;
     }
 
@@ -146,6 +154,7 @@ public class ExcelGenerator {
                 case STRING:
                     cell.setCellType(CellType.STRING);
                     cell.setCellValue(String.valueOf(value));
+                    cell.setCellValue(new Date());
                     break;
                 case NUMERIC:
                     cell.setCellType(CellType.NUMERIC);
