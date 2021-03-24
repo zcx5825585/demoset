@@ -1,5 +1,6 @@
 package zcx.com.example.excelstarter.contant;
 
+import org.springframework.util.StringUtils;
 import zcx.com.example.excelstarter.anno.ExcelSheet;
 import zcx.com.example.excelstarter.anno.ExcelColumn;
 
@@ -31,7 +32,7 @@ public class ObjectExcelInfo {
             this.isExcelEntity = false;
             return;
         }
-        this.sheetName = "".equals(sheetAnno.sheetName()) ? clazz.getSimpleName() : sheetAnno.sheetName();
+        this.sheetName = StringUtils.isEmpty(sheetAnno.sheetName()) ? clazz.getSimpleName() : sheetAnno.sheetName();
 
         this.titles = new ArrayList<>();
         this.fieldMap = new HashMap<>();
@@ -39,7 +40,7 @@ public class ObjectExcelInfo {
         for (Field field : clazz.getDeclaredFields()) {
             ExcelColumn columnAnno = field.getAnnotation(ExcelColumn.class);
             if (columnAnno != null) {
-                String columnName = "".equals(columnAnno.columnName()) ? field.getName() : columnAnno.columnName();
+                String columnName = StringUtils.isEmpty(columnAnno.columnName()) ? field.getName() : columnAnno.columnName();
                 titles.add(columnName);
                 fieldMap.put(columnName, field);
                 annoMap.put(columnName, columnAnno);

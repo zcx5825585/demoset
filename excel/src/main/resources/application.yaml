@@ -9,3 +9,6 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/excel?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
     username: root
     password: sa123
+
+zcx-excel:
+  test-param: hello
