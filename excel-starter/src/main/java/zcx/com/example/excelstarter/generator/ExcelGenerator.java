@@ -9,6 +9,8 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.springframework.util.StringUtils;
 import zcx.com.example.excelstarter.anno.ExcelColumn;
 import zcx.com.example.excelstarter.contant.ObjectExcelInfo;
+import zcx.com.example.excelstarter.exception.ExcelError;
+import zcx.com.example.excelstarter.exception.ExcelMapResult;
 import zcx.com.example.excelstarter.valueMap.ExcelValueMap;
 
 import java.lang.reflect.Field;
@@ -24,15 +26,18 @@ import java.util.List;
  */
 public class ExcelGenerator {
 
-    public static <T> List<T> mapSheet(HSSFWorkbook workbook, Class<T> clazz) throws IllegalAccessException, InstantiationException {
+    public static <T> ExcelMapResult<T> mapSheet(HSSFWorkbook workbook, Class<T> clazz) {
         ObjectExcelInfo classInfo = new ObjectExcelInfo(clazz);
+        //结果类 包含转换结果list 和 转换中发生的错误
+        ExcelMapResult<T> result = new ExcelMapResult<>();
         if (!classInfo.isExcelEntity()) {
             //未添加注解
-            return new ArrayList<>();
+            result.addError(new ExcelError("该类未使用excel注解,无法解析"));
+            return result;
         }
-
+        String sheetName = classInfo.getSheetName();
         //获取对应的sheet
-        HSSFSheet sheet = workbook.getSheet(classInfo.getSheetName());//设置sheet的Name
+        HSSFSheet sheet = workbook.getSheet(sheetName);//设置sheet的Name
 
         //获取工作表的行
         int index = 0;
@@ -52,18 +57,28 @@ public class ExcelGenerator {
         List<T> data = new ArrayList<>();
         while (index < sheet.getLastRowNum() + 1) {
             HSSFRow row = sheet.getRow(index);
-            T datum = clazz.newInstance();
+            T datum = null;
+            try {
+                datum = clazz.newInstance();
+            } catch (InstantiationException | IllegalAccessException e) {
+                result.addError(new ExcelError("对象实例化出错", sheetName, index + 1));
+            }
             for (int i = 0; i < sheetTitles.size(); i++) {
                 String columnName = sheetTitles.get(i);
                 HSSFCell cell = row.getCell(i);
                 if (columnName != null && cell != null) {
-                    valueSetter(datum, classInfo.getFieldMap().get(columnName), classInfo.getAnnoMap().get(columnName), cell);
+                    try {
+                        valueSetter(datum, classInfo.getFieldMap().get(columnName), classInfo.getAnnoMap().get(columnName), cell);
+                    } catch (IllegalAccessException e) {
+                        result.addError(new ExcelError("数据错误",sheetName,index+1,i+1));
+                    }
                 }
             }
             data.add(datum);
             index++;
         }
-        return data;
+        result.setData(data);
+        return result;
     }
 
     private static <T> void valueSetter(T datum, Field field, ExcelColumn columnAnno, HSSFCell cell) throws IllegalAccessException {
