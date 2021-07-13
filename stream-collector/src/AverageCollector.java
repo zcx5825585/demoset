@@ -28,6 +28,8 @@ public class AverageCollector implements Collector<Integer, Integer[], Double> {
         return () -> new Integer[]{0, 0};
     }
 
+    //不会改变参数的值 如在方法中重新初始化arr则不会生效
+    //如要改变则需包裹在其他容器中
     @Override
     public BiConsumer<Integer[], Integer> accumulator() {
         return (arr, num) -> {

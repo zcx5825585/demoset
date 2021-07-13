@@ -19,8 +19,8 @@ public class MyExcelMapLoader extends MapLoader {
     @Override
     public void loadExcelMap() {
         Map<String, String> cityCodeMap = new HashMap<>();
-        cityCodeMap.put("0531", "济南");
-        cityCodeMap.put("0532", "青岛");
-        ExcelValueMap.putMap("city-code", cityCodeMap);
+        cityCodeMap.put("0", "未报警");
+        cityCodeMap.put("1", "警报中");
+        ExcelValueMap.putMap("device-status", cityCodeMap);
     }
 }

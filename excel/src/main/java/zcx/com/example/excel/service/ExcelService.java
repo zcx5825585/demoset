@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zcx.com.example.excel.entity.ExcelEntity;
 import zcx.com.example.excel.repository.ExcelRepository;
+import zcx.com.example.excelstarter.exception.ExcelError;
 import zcx.com.example.excelstarter.exception.ExcelMapResult;
 import zcx.com.example.excelstarter.generator.CsvGenerator;
 import zcx.com.example.excelstarter.generator.ExcelGenerator;
@@ -20,11 +21,18 @@ public class ExcelService {
     private ExcelRepository excelRepository;
 
     public void readWorkBook(HSSFWorkbook workbook) {
-            ExcelMapResult<ExcelEntity> excelMapResult = ExcelGenerator.mapSheet(workbook, ExcelEntity.class);
-            List<ExcelEntity> excelEntities = excelMapResult.getData();
-            for (ExcelEntity excelEntity : excelEntities) {
-                System.out.println(excelEntity.getName());
-            }
+        ExcelMapResult<ExcelEntity> excelMapResult = ExcelGenerator.mapSheet(workbook, ExcelEntity.class,a->{
+            System.out.println(a.getDeviceNo());
+            return null;
+        });
+        List<ExcelError> errorList = excelMapResult.getErrorList();
+        if (errorList.size() > 0) {
+
+        }
+        List<ExcelEntity> excelEntities = excelMapResult.getData();
+        for (ExcelEntity excelEntity : excelEntities) {
+            System.out.println(excelEntity.getDeviceNo());
+        }
 
     }
 

@@ -17,6 +17,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * excel生成器
@@ -26,7 +27,7 @@ import java.util.List;
  */
 public class ExcelGenerator {
 
-    public static <T> ExcelMapResult<T> mapSheet(HSSFWorkbook workbook, Class<T> clazz) {
+    public static <T> ExcelMapResult<T> mapSheet(HSSFWorkbook workbook, Class<T> clazz, Function<T, ?>  function) {
         ObjectExcelInfo classInfo = new ObjectExcelInfo(clazz);
         //结果类 包含转换结果list 和 转换中发生的错误
         ExcelMapResult<T> result = new ExcelMapResult<>();
@@ -70,7 +71,14 @@ public class ExcelGenerator {
                     try {
                         valueSetter(datum, classInfo.getFieldMap().get(columnName), classInfo.getAnnoMap().get(columnName), cell);
                     } catch (IllegalAccessException e) {
-                        result.addError(new ExcelError("数据错误",sheetName,index+1,i+1));
+                        result.addError(new ExcelError("数据错误", sheetName, index + 1, i + 1));
+                    }
+                }
+                if (function != null) {
+                    try {
+                        Object functionResult = function.apply(datum);
+                    } catch (Exception e) {
+                        result.addError(new ExcelError("操作发生错误", sheetName, index + 1, i + 1));
                     }
                 }
             }
@@ -79,6 +87,10 @@ public class ExcelGenerator {
         }
         result.setData(data);
         return result;
+    }
+
+    public static <T> ExcelMapResult<T> mapSheet(HSSFWorkbook workbook, Class<T> clazz) {
+        return mapSheet(workbook, clazz, null);
     }
 
     private static <T> void valueSetter(T datum, Field field, ExcelColumn columnAnno, HSSFCell cell) throws IllegalAccessException {
