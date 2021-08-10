@@ -13,6 +13,8 @@
         <module>queueDemo</module>
         <module>xml_html</module>
         <module>wordCount</module>
+        <module>future</module>
+        <module>classLoader</module>
     </modules>
     <build>
         <plugins>
