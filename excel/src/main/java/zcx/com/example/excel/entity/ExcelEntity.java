@@ -7,24 +7,20 @@ import zcx.com.example.excelstarter.contant.FiledType;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "excel")
-@ExcelSheet(sheetName = "城市")
+@Table(name = "car_device")
+@ExcelSheet(sheetName = "车辆设备")
 public class ExcelEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ExcelColumn(columnName = "城市", valueType = FiledType.STRING)
-    private String name;
-    @ExcelColumn(columnName = "区号", valueType = FiledType.MAP, mapName = "city-code")
-    private String description;
-
-    @ExcelColumn(defaultValue = "-")
-    private String note;
-
-    @ExcelColumn(columnName = "数字",valueType = FiledType.NUMERIC,defaultValue = "-")
-    private Integer count;
+    @ExcelColumn(columnName = "设备识别码", valueType = FiledType.STRING)
+    private String deviceNo;
+    @ExcelColumn(columnName = "警报状态", valueType = FiledType.MAP, mapName = "device-status")
+    private String warningStatus;
+    @ExcelColumn(columnName = "警报数",valueType = FiledType.NUMERIC,defaultValue = "-")
+    private Integer warningCount;
 
     public Long getId() {
         return id;
@@ -34,35 +30,27 @@ public class ExcelEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getDeviceNo() {
+        return deviceNo;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDeviceNo(String deviceNo) {
+        this.deviceNo = deviceNo;
     }
 
-    public String getNote() {
-        return note;
+    public String getWarningStatus() {
+        return warningStatus;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setWarningStatus(String warningStatus) {
+        this.warningStatus = warningStatus;
     }
 
-    public Integer getCount() {
-        return count;
+    public Integer getWarningCount() {
+        return warningCount;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setWarningCount(Integer warningCount) {
+        this.warningCount = warningCount;
     }
 }
