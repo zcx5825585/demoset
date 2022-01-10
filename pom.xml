@@ -15,6 +15,8 @@
         <module>wordCount</module>
         <module>future</module>
         <module>classLoader</module>
+        <module>xipai</module>
+        <module>Deeplearning4j</module>
     </modules>
     <build>
         <plugins>

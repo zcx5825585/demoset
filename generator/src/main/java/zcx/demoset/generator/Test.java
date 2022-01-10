@@ -1,5 +1,7 @@
 package zcx.demoset.generator;
 
+import com.alibaba.fastjson.JSON;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,12 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Test {
+       public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args) throws IOException {
-
-        String path="C:\\Users\\zcx\\Desktop";
-        File sqlFile=new File(path+"\\generator.sql");
-        if (!sqlFile.exists()){
+        String path = "C:\\Users\\zcx\\Desktop";
+        File sqlFile = new File(path + "\\generator.sql");
+        if (!sqlFile.exists()) {
             sqlFile.createNewFile();
         }
         StringBuilder sql = new StringBuilder();
@@ -42,10 +43,10 @@ public class Test {
 
         //具体字段
         String[] rows = sheet.getContent().split("\n");
-        String key="id";
+        String key = "id";
         for (String row : rows) {
             Column column = new Column(row);
-            key=column.getKey(key);
+            key = column.getKey(key);
             tableSql.append(column.toCreateSql());
             //params 格式
             //0     1       2   3   4       5   6
@@ -67,7 +68,7 @@ public class Test {
         //tail
         tableSql.append(String.format("PRIMARY KEY (`%s`) USING BTREE\n" +
                 ") ENGINE = InnoDB AUTO_INCREMENT = 0 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '%s' ROW_FORMAT = Dynamic;\n" +
-                "\n", key,sheet.getTableRealName()));
+                "\n", key, sheet.getTableRealName()));
         tableSql.append("\n\n\n");
         return tableSql;
     }
@@ -75,30 +76,19 @@ public class Test {
     private static List<Sheet> getSheets() {
         List<Sheet> sheets = new ArrayList<>();
         sheets.add(
-                new Sheet("transport_analy",
-                        "出入库单明细",
-                        "transport_info_id\tID\tbigint\t\t是\t是\t\n" +
-                                "hospital_code\t医院编码\tvarchar\t50\t\t\t\n" +
-                                "transport_bill_no\t出入库单ID\tvarchar\t50\t\t\t\n" +
-                                "catalog_code\t类别编码\tvarchar\t50\t\t\t\n" +
-                                "catalog_name\t类别名称\tvarchar\t50\t\t\t\n" +
-                                "manufacturer_code\t厂家编码\tvarchar\t50\t\t\t\n" +
-                                "manufacturer_name\t生产厂家\tvarchar\t50\t\t\t\n" +
-                                "vaccines_name\t疫苗名称\tvarchar\t50\t\t\t\n" +
-                                "batch_num\t生产批号\tvarchar\t50\t\t\t\n" +
-                                "man_date\t生产日期\tvarchar\t50\t\t\t\n" +
-                                "valid_date\t有效期截止日期\tvarchar\t50\t\t\t\n" +
-                                "spec\t疫苗规格\tvarchar\t20\t\t\t\n" +
-                                "quantity\t包装规格\tbigint\t\t\t\t\n" +
-                                "count\t数量\tbigint\t\t\t\t\n" +
-                                "remain_count\t未入库数量\tbigint\t\t\t\t\n" +
-                                "status\t状态\tvarchar\t10\t\t\t0未开始 1未完成 2已完成\n" +
-                                "remark\t备注\tvarchar\t255\t\t\t\n" +
-                                "create_by\t创建者\tvarchar\t50\t\t\t\n" +
-                                "create_time\t创建时间\tdatetime\t\t\t\t\n" +
-                                "update_by\t更新者\tvarchar\t50\t\t\t\n" +
-                                "update_time\t更新时间\tdatetime\t\t\t\t\n")
-        );
+                new Sheet("operate_pay_wx_v2",
+                        "微信v2支付信息",
+                        "pay_wx_v2_id\tID\tbigint\t\t是\t是\t\n" +
+                                "pay_accept\t是否启用\tvarchar\t20\t\t\t0不可用 1可用\n" +
+                                "auto_refund\t自送退款\tvarchar\t20\t\t\t0不可用 1可用\n" +
+                                "key\t私钥\tvarchar\t255\t\t\t\n" +
+                                "cert_path\t公钥\ttext\t\t\t\t\n" +
+                                "cert_pem\tcert.pem\ttext\t\t\t\t\n" +
+                                "key_pem\tkey.pem\ttext\t\t\t\t\n" +
+                                "app_sercret\tAppSercret\tvarchar\t255\t\t\t\n" +
+                                "app_id\tappId\tvarchar\t50\t\t\t\n" +
+                                "mch_id\tmchId\tvarchar\t50\t\t\t\n" +
+                                "dept_id\t部门id\tbigint\t\t\t\t\n"));
         return sheets;
     }
 }
