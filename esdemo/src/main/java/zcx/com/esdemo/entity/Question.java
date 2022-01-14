@@ -2,7 +2,7 @@ package zcx.com.esdemo.entity;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document(indexName="zhihu",type="question",indexStoreType="fs",shards=5,replicas=1,refreshInterval="-1")
+//@Document(indexName="zhihu",type="question",indexStoreType="fs",shards=5,replicas=1,refreshInterval="-1")
 public class Question {
     private String id;
     private String title;

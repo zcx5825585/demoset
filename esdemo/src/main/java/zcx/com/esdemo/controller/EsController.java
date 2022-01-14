@@ -37,7 +37,7 @@ public class EsController {
 
     @PostMapping
     public void test(@RequestBody String json) throws IOException {
-        IndexRequest indexRequest = new IndexRequest(index, type);
+        IndexRequest indexRequest = new IndexRequest(index);
         String source = json;
         indexRequest.source(source, XContentType.JSON);
         elasticsearchClient.index(indexRequest, RequestOptions.DEFAULT);
@@ -49,7 +49,6 @@ public class EsController {
         sourceBuilder.from(0);
         sourceBuilder.size(10);
         SearchRequest searchRequest = new SearchRequest(index);
-        searchRequest.types(type);
         searchRequest.source(sourceBuilder);
         try {
             SearchResponse response = elasticsearchClient.search(searchRequest, RequestOptions.DEFAULT);
@@ -64,7 +63,6 @@ public class EsController {
     @GetMapping("/search")
     public SearchResponse searchTest(String keyword) {
         SearchRequest searchRequest = new SearchRequest(index);
-        searchRequest.types(type);
 
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
         sourceBuilder.from(0);
@@ -87,7 +85,7 @@ public class EsController {
 
     @GetMapping("/{id}")
     public GetResponse getTest(@PathVariable(value = "id") String id) {
-        GetRequest getRequest=new GetRequest(index,type,id);
+        GetRequest getRequest=new GetRequest(index,id);
         try {
             return elasticsearchClient.get(getRequest,RequestOptions.DEFAULT);
         } catch (IOException e) {
@@ -98,7 +96,7 @@ public class EsController {
 
     @PutMapping("/{id}")
     public void updateTest(@PathVariable(value = "id") String id) {
-        UpdateRequest updateRequest = new UpdateRequest(index, type, id);
+        UpdateRequest updateRequest = new UpdateRequest(index, id);
         updateRequest.doc("test", "bbb");
         try {
             elasticsearchClient.update(updateRequest, RequestOptions.DEFAULT);
