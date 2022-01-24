@@ -1,0 +1,12 @@
+spring:
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+  elasticsearch:
+    rest:
+      uris: 118.190.63.181:9200
+      connection-timeout: 5s
+      readTimeout: 5s
+      username:
+      password:

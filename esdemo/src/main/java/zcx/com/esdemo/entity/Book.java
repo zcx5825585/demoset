@@ -9,15 +9,15 @@ import org.springframework.data.elasticsearch.annotations.Similarity;
 import java.io.Serializable;
 import java.util.List;
 
-@Document(indexName="spring-data",type="book",indexStoreType="fs",shards=5,replicas=1,refreshInterval="-1")
+@Document(indexName = "spring-data", indexStoreType = "fs", shards = 5, replicas = 1, refreshInterval = "-1")
 public class Book implements Serializable {
     @Id
     private Integer id;
-        @Field(index = false,similarity = Similarity.BM25)
+    @Field(index = false, type = FieldType.Keyword)
     private String describe;
-//    @Field(index = false)
+    @Field(index = true, type = FieldType.Text, similarity = Similarity.BM25, analyzer = "whitespace")
     private String name;
-
+    @Field(index = true, type = FieldType.Keyword, similarity = Similarity.BM25)
     private List<String> tags;
 
     public List<String> getTags() {

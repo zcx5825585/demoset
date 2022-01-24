@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "zcx-excel")
 public class ExcelProperties  {
-    private String testParam;
+    private String testParam = "test";
 
     public String getTestParam() {
         return testParam;

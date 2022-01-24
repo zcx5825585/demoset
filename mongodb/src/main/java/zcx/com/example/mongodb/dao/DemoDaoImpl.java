@@ -18,7 +18,7 @@ public class DemoDaoImpl implements DemoDao {
 
     @Override
     public void saveDemo(DemoEntity demoEntity) {
-        Long lastId = mongoTemplate.find(new Query(), DemoEntity.class).stream().mapToLong(DemoEntity::getId).max().getAsLong();
+        Long lastId = mongoTemplate.find(new Query(), DemoEntity.class).stream().mapToLong(DemoEntity::getId).max().orElse(1L);
         demoEntity.setId(lastId + 1);
         mongoTemplate.save(demoEntity);
     }
