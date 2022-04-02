@@ -3,8 +3,8 @@ package zcx.com.esdemo.controller;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.web.bind.annotation.*;
 import zcx.com.esdemo.dao.BookSearchRepository;
 import zcx.com.esdemo.entity.Book;
@@ -73,7 +73,12 @@ public class BookController {
 
     @GetMapping
     public List<Book> testSearch(String keyword) {
+        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("name", keyword);
+        nativeSearchQueryBuilder.withQuery(queryBuilder);
+
+        NativeSearchQuery query = nativeSearchQueryBuilder.build();
+        bookSearchRepository.search(queryBuilder);
 
         Iterable<Book> searchResult = bookSearchRepository.searchBook(keyword);
         Iterator<Book> iterator = searchResult.iterator();

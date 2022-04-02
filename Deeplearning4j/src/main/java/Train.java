@@ -1,4 +1,3 @@
-import org.datavec.image.loader.NativeImageLoader;
 import org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
@@ -19,8 +18,9 @@ import org.nd4j.linalg.lossfunctions.LossFunctions;
 import java.io.File;
 import java.io.IOException;
 
-public class Test {
-    public static void main2(String[] args) throws IOException {
+public class Train {
+
+    public static void main(String[] args) throws IOException {
         int nChannels = 1;      //black & white picture, 3 if color image
         int outputNum = 10;     //number of classification
         int batchSize = 64;     //mini batch size for sgd
@@ -88,12 +88,4 @@ public class Test {
         ModelSerializer.writeModel(model, new File("C:\\Users\\zcx\\Desktop\\mnist\\model"), true);
     }
 
-    public static void main(String[] args) throws IOException {
-        MultiLayerNetwork model2 = ModelSerializer.restoreMultiLayerNetwork(new File("C:\\Users\\zcx\\Desktop\\mnist\\model"));
-        NativeImageLoader imageLoader = new NativeImageLoader();
-        INDArray image = imageLoader.asMatrix(new File("C:\\Users\\zcx\\Desktop\\mnist\\num.jpg"));
-        INDArray imageNum = model2.output(image);
-        System.out.println(imageNum);
-
-    }
 }

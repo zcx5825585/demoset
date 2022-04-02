@@ -1,3 +1,4 @@
+# spring配置
 spring:
   data:
     elasticsearch:
@@ -5,8 +6,8 @@ spring:
         enabled: true
   elasticsearch:
     rest:
-      uris: 118.190.63.181:9200
+      uris: 118.190.172.85:9200
       connection-timeout: 5s
       readTimeout: 5s
-      username:
-      password:
+      username: apm_system
+      password: F67VtKLgEfGAAu5Lo6gw

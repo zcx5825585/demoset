@@ -75,20 +75,16 @@ public class Test {
 
     private static List<Sheet> getSheets() {
         List<Sheet> sheets = new ArrayList<>();
+
         sheets.add(
-                new Sheet("operate_pay_wx_v2",
-                        "微信v2支付信息",
-                        "pay_wx_v2_id\tID\tbigint\t\t是\t是\t\n" +
-                                "pay_accept\t是否启用\tvarchar\t20\t\t\t0不可用 1可用\n" +
-                                "auto_refund\t自送退款\tvarchar\t20\t\t\t0不可用 1可用\n" +
-                                "key\t私钥\tvarchar\t255\t\t\t\n" +
-                                "cert_path\t公钥\ttext\t\t\t\t\n" +
-                                "cert_pem\tcert.pem\ttext\t\t\t\t\n" +
-                                "key_pem\tkey.pem\ttext\t\t\t\t\n" +
-                                "app_sercret\tAppSercret\tvarchar\t255\t\t\t\n" +
-                                "app_id\tappId\tvarchar\t50\t\t\t\n" +
-                                "mch_id\tmchId\tvarchar\t50\t\t\t\n" +
-                                "dept_id\t部门id\tbigint\t\t\t\t\n"));
+                new Sheet("cook_cookbook_tag",
+                        "菜谱tag关联 ",
+                        "cook_book_id\t菜谱ID\tbigint\t\t是\t是\t\n" +
+                                "tag\ttag\tvarchar\t30\t\t\t\n" +
+                                "type\t类型\tvarchar\t30\t\t\t预留 区分不同标签 添加颜色\n"));
+
+
+
         return sheets;
     }
 }
