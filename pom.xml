@@ -17,6 +17,17 @@
         <module>classLoader</module>
         <module>stream-collector</module>
         <module>Deeplearning4j</module>
+        <module>anno</module>
+        <module>esdemo</module>
+        <module>excel</module>
+        <module>excel-starter</module>
+        <module>feign_client</module>
+        <module>generator</module>
+        <module>integration-demo</module>
+        <module>jooqdemo</module>
+        <module>mongodb</module>
+        <module>mqtt</module>
+        <module>same_url</module>
     </modules>
     <build>
         <plugins>
